@@ -1,5 +1,3 @@
-use std::rc::Rc;
-use dioxus::html::input::checked;
 use dioxus::prelude::*;
 use dioxus::prelude::Key::{Enter, Escape};
 use crate::utils::checkbox::Checkbox;
@@ -9,7 +7,7 @@ mod utils;
 
 const TAILWIND_CSS: Asset = asset!("/assets/tailwind.css");
 
-#[derive(PartialEq, Clone)]
+#[derive(Clone)]
 struct Task {
     id: String,
     task: Signal<String>,
