@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 use dioxus::prelude::Key::{Enter, Escape};
 use crate::utils::checkbox::Checkbox;
+use crate::utils::input::Input;
 use crate::utils::title::Title;
 
 mod utils;
@@ -48,14 +49,14 @@ fn App() -> Element {
                 Title {
                     "TODO"
                 },
-                input {
-                    type: "text",
+                Input {
+                    r#type: "text",
                     placeholder: "Add a task",
                     value: new_task.cloned().task.cloned(),
-                    oninput: move |e| {
+                    oninput: move |e: Event<FormData>| {
                         new_task.cloned().task.set(e.value());
                     },
-                    onkeydown: move |e| {
+                    onkeydown: move |e: Event<KeyboardData>| {
                         if e.data.key() == Enter {
                             tasks.push(new_task.cloned());
                             id += 1;
@@ -65,15 +66,14 @@ fn App() -> Element {
                                 checked: Signal::new(false)
                             })
                         }
-                    },
-                    class: "px-4 py-4 border-b-zinc-600 border-b-2 focus:border-b-zinc-300 active:border-b-zinc-300 focus:outline-none mb-4"
+                    }
                 },
                 for mut task in tasks.cloned() {
                     if editing.cloned() && curr_editing.cloned() == task.id {
-                        input {
+                        Input {
                             type: "text",
                             value: task.task.cloned(),
-                            oninput: move |e| {
+                            oninput: move |e: Event<FormData>| {
                                 task.task.set(e.value())
                             },
                             class: "px-2 py-4 border-b-zinc-600 border-b-2 focus:border-b-zinc-300 active:border-b-zinc-300 focus:outline-none"
